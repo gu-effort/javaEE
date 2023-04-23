@@ -1,0 +1,6 @@
+2023-04-23 17:12:36删除id为[16]的员工
+2023-04-23 17:12:36增加员工。员工参数[Employee{id=null, number=1009, name='tom', gender='男', age=18, dep=Department{id=1, name='null', number=null, employeeList=null}}]
+2023-04-23 17:12:36修改员工。员工参数[Employee{id=17, number=1009, name='tom是', gender='男', age=1009, dep=Department{id=1, name='null', number=null, employeeList=null}}]
+2023-04-23 17:12:36增加部门。部门参数为[Department{id=null, name='划水的', number=50, employeeList=null}]
+2023-04-23 17:12:36修改部门。部门参数为[Department{id=11, name='销售部', number=50, employeeList=null}]
+2023-04-23 17:12:36删除id为[11]的部门
