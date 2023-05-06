@@ -1,0 +1,23 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 179220
+    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=GMT%2B8&useSSL=true
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+        format_sql: true
+        enable_lazy_load_no_trans: true
+      show_sql: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+server:
+  port: 8000
