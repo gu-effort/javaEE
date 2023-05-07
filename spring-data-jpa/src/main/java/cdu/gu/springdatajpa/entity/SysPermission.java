@@ -5,10 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pormission")
+@Table(name = "permission")
 @Data
-public class
-SysPermission {
+public class SysPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -3,6 +3,7 @@ package cdu.gu.springdatajpa.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
@@ -15,4 +16,6 @@ public class Department {
     private String name;
     @Column
     private Integer number;
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "dep")
+    private List<Employee> employeeList;
 }

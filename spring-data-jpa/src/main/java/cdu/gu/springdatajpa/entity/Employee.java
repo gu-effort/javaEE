@@ -19,4 +19,7 @@ public class Employee {
     private String gender;
     @Column
     private Integer age;
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "none",value = ConstraintMode.NO_CONSTRAINT))
+    private Department dep;
 }
