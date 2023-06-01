@@ -1,0 +1,17 @@
+tencent:
+  cloud:
+    appId: 1317476475
+    secretId: AKIDudCamlgV8e5NZifSCpFXcWBdu2Zv66sS
+    secretKey: RdaMyQgkcJp9GAwXv693nOtEVhidOwIj
+    region: ap-chengdu
+    bucket: emos-1317476475
+  trtc:
+    appId: 1400800832
+    secretKey: 83eadd65cd28189a5801063dd4594c901e79fe794b1b45c89bbc3842d1e2227f
+    expire: 86400
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: cdu.gu.trtc.dao
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

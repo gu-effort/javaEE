@@ -7,6 +7,12 @@ import com.example.springshiyan5.service.DepartmentService;
 import com.example.springshiyan5.service.EmployeeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,65 +25,70 @@ import java.util.List;
 
 @Controller
 @RequestMapping("emp")
+@PreAuthorize("hasAnyRole('MANAGER','ADMIN')")
 public class EmployeeController {
-    @Resource
+
+    @Autowired
     EmployeeService employeeService;
-    @Resource
+    @Autowired
     DepartmentService departmentService;
 
+    @PreAuthorize("hasAnyRole('EMPLOYEE','MANAGER','ADMIN')")
     @RequestMapping("search")
-    public ModelAndView search(Employee condition, @RequestParam(defaultValue = "1") int pageNo){
-        ModelAndView mv=new ModelAndView("emp/list");
-        PageHelper.startPage(pageNo,10);
-        List<Employee> employeeList=employeeService.find(condition);
-        PageInfo pageInfo=new PageInfo(employeeList);
-        List<Department> departmentList=departmentService.findAll();
+    public ModelAndView search(Employee condition, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        ModelAndView mv = new ModelAndView("emp/list");
+        List<Department> departmentList = departmentService.findAll();
+        Page<List<Employee>> pageInfo = employeeService.findByPage(condition, pageable);
 
-        mv.addObject("empList",employeeList);
-        mv.addObject("pageInfo",pageInfo);
-        mv.addObject("depList",departmentList);
-        mv.addObject("c",condition);
+        mv.addObject("pageInfo", pageInfo);
+        mv.addObject("depList", departmentList);
+        mv.addObject("c", condition);
         return mv;
     }
 
     @GetMapping("add")
-    public ModelAndView add(){
-        ModelAndView mv=new ModelAndView("emp/add");
-        List<Department> departmentList=departmentService.findAll();
-        mv.addObject("depList",departmentList);
+    public ModelAndView add() {
+        ModelAndView mv = new ModelAndView("emp/add");
+        List<Department> departmentList = departmentService.findAll();
+        mv.addObject("depList", departmentList);
         return mv;
     }
 
     @PostMapping("add")
-    public String add(Employee employee){
-        if (employeeService.add(employee)){
+    public String add(Employee employee) {
+//        if (employeeService.add(employee)) {
+        if (employeeService.save(employee)) {
             return "redirect:search";
-        }else{
+        } else {
             return "redirect:add";
         }
     }
 
     @GetMapping("mod")
-    public ModelAndView mod(int id){
-        ModelAndView mv=new ModelAndView("emp/mod");
-        Employee employee=employeeService.findById(id);
-        mv.addObject("emp",employee);
-        List<Department> departmentList=departmentService.findAll();
-        mv.addObject("depList",departmentList);
+    public ModelAndView mod(int id) {
+        ModelAndView mv = new ModelAndView("emp/mod");
+        Employee emp = employeeService.findById(id);
+        mv.addObject("emp", emp);
+        List<Department> departmentList = departmentService.findAll();
+        mv.addObject("depList", departmentList);
         return mv;
     }
 
     @PostMapping("mod")
-    public String mod(Employee employee){
-        if (employeeService.mod(employee)){
+    public String mod(Employee employee) {
+//        if (employeeService.mod(employee)) {
+        if (employeeService.save(employee)) {
             return "redirect:search";
-        }else {
+        } else {
             return "redirect:mod";
         }
     }
-    @PostMapping("del")
-    public String del(int id){
+
+    @GetMapping("del")
+    public String del(int id) {
         employeeService.del(id);
         return "redirect:search";
     }
+
+
 }

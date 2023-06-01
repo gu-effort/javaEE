@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cdu.gu.trtc.dao.TbMeetingDao">
+    <select id="searchOnlineMeetingMembers" parameterType="HashMap" resultType="HashMap">
+        select u.id,
+               u.name,
+               u.photo,
+               IF(u.id = #{userId},1,0) AS mine
+        from tb_meeting m
+        join tb_user u on JSON_CONTAINS(m.members,CAST(u.id AS CHAR))
+        where m.id = #{meetingId} AND u.'status' = 1
+        ORDER BY mine DESC
+    </select>
+</mapper>

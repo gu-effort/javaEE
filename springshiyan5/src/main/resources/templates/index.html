@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>人事管理系统</title>
+    <link rel="stylesheet" th:href="@{'/bootstrap/css/bootstrap.css'}"/>
+    <link rel="stylesheet" th:href="@{'/css/style.css'}"/>
+    <script th:src="@{'/js/jquery-3.6.0.js'}"></script>
+    <script>
+        $().ready(function () {
+            $(".yi").click(function () {
+                $(this).next().slideToggle(500);
+            })
+        })
+    </script>
+</head>
+<body>
+
+<div id="container">
+    <div id="top">
+        <div id="logo">人事管理系统</div>
+        <div id="welcome">
+            <label>欢迎：</label>
+            <th:block th:text="${user.username}"></th:block>
+            <br>
+            <label>您的身份是：</label>
+            <th:block th:each="role:${user.roles}" th:text="${role.name}"></th:block>
+            <div><a href="/logout">退出系统</a></div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="left">
+            <th:block sec:authorize="${hasAnyRole('EMPLOYEE','ADMIN','MANAGER')}">
+                <div class="yi">员工管理</div>
+                <ul class="er">
+                    <li><a href="emp/search" target="right">员工管理</a></li>
+                    <th:block sec:authorize="${hasAnyRole('ADMIN','MANAGER')}">
+                        <li><a href="emp/add" target="right">员工添加</a></li>
+                    </th:block>
+                </ul>
+            </th:block>
+            <th:block sec:authorize="${hasAnyRole('ADMIN','MANAGER')}">
+                <div class="yi">部门管理</div>
+                <ul class="er">
+                    <li><a href="dep/search" target="right">部门管理</a></li>
+                    <li><a href="dep/add" target="right">部门添加</a></li>
+                </ul>
+            </th:block>
+            <th:block sec:authorize="${hasAnyRole('ADMIN')}">
+                <div class="yi">用户管理</div>
+                <ul class="er">
+                    <li><a href="user/search" target="right">用户管理</a></li>
+                    <li><a href="user/add" target="right">用户添加</a></li>
+                </ul>
+            </th:block>
+            <th:block sec:authorize="${hasAnyRole('ADMIN')}">
+                <div class="yi">角色管理</div>
+                <ul class="er">
+                    <li><a href="role/search" target="right">角色管理</a></li>
+                    <li><a href="role/add" target="right">角色添加</a></li>
+                </ul>
+            </th:block>
+            <th:block sec:authorize="${hasAnyRole('ADMIN')}">
+                <div class="yi">权限管理</div>
+                <ul class="er">
+                    <li><a href="permission/search" target="right">权限管理</a></li>
+                    <li><a href="permission/add" target="right">权限添加</a></li>
+                </ul>
+            </th:block>
+        </div>
+        <iframe id="right" name="right" scrolling="no" frameborder="0" title="frame"
+                src="emp/search"></iframe>
+    </div>
+    <div id="bottom"></div>
+
+</div>
+
+
+</body>
+</html>
